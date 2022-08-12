@@ -11,6 +11,7 @@ func RegisterRoute(e *echo.Echo, taskController *controllers.TaskController, wor
 	e.POST("/tasks", taskController.Store)
 	e.GET("/tasks/:id/edit", taskController.Edit)
 	e.POST("/tasks/:id/update", taskController.Update)
+	e.GET("/tasks/:id/delete", taskController.Delete)
 
 	e.GET("/workers", workerController.Index)
 }

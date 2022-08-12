@@ -111,3 +111,13 @@ func (controller TaskController) Update(c echo.Context) error {
 
 	return c.Redirect(http.StatusMovedPermanently, "/tasks")
 }
+
+func (controller TaskController) Delete(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	}
+
+	controller.db.Where("id = ?", id).Delete(&_models.Task{})
+	return c.Redirect(http.StatusMovedPermanently, "/tasks")
+}

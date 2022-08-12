@@ -9,6 +9,7 @@ import (
 func RegisterRoute(e *echo.Echo, taskController *controllers.TaskController, workerController *controllers.WorkerController) {
 	e.GET("/tasks", taskController.Index)
 	e.POST("/tasks", taskController.Store)
+	e.GET("/tasks/:id/edit", taskController.Edit)
 
 	e.GET("/workers", workerController.Index)
 }

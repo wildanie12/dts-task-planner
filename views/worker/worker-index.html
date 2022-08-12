@@ -67,6 +67,7 @@
                     <th>Tgl Akhir</th>
                     <th>Status</th>
                     <th>Pegawai</th>
+                    <th></th>
                 </tr>
                 {{ range $index, $task := .tasks}}
                 <tr>
@@ -77,6 +78,10 @@
                     <td>{{ $task.EndDate.Format "2 Jan 2006" }}</td>
                     <td>{{ $task.Done }}</td>
                     <td>{{ $task.WorkerID }}</td>
+                    <td>
+                        <a href="/tasks/{{ $task.ID }}/edit">Edit</a>
+                        <a href="/tasks/{{ $task.ID }}/delete" onclick="return confirm('Anda yakin?')">Hapus</a>
+                    </td>
                 </tr>
                 {{ end }}
             </table>

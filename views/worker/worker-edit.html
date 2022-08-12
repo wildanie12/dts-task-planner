@@ -19,7 +19,7 @@
         <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
             <h1 class="font-bold text-2xl mb-4">Daftar Task</h1>
             
-            <form action="/tasks" method="post" class="flex flex-col gap-3 mb-4">
+            <form action="/tasks/{{ .task.ID }}/update" method="post" class="flex flex-col gap-3 mb-4">
                 <div class="w-full">
                     <label>Nama task</label>
                     <input type="text" value="{{ .task.Name }}" placeholder="Nama task" name="name">

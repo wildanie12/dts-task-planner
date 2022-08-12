@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ .baseURL }}/css/style.css">
+</head>
+
+<body class="bg-gray-50">
+    <div class="w-full lg:w-11/12 m-auto h-screen flex space-x-2 items-start justify-center pt-12">
+        <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
+            <h1 class="font-bold text-2xl mb-4">Daftar Task</h1>
+            
+            <form action="/tasks" method="post" class="flex flex-col gap-3 mb-4">
+                <div class="w-full">
+                    <label>Nama task</label>
+                    <input type="text" value="{{ .task.Name }}" placeholder="Nama task" name="name">
+                </div>
+                <div class="w-full">
+                    <label>Deskripsi</label>
+                    <textarea type="text" placeholder="Deskripsi" name="description">{{ .task.Description }}</textarea>
+                </div>
+                <div class="flex w-full gap-2">
+                    <div class="w-full md:w-1/2">
+                        <label>Start Date</label>
+                        <input type="date" name="start_date" value='{{ .task.StartDate.Format "2006-01-02" }}'>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <label>End Date</label>
+                        <input type="date" name="end_date" value='{{ .task.EndDate.Format "2006-01-02" }}'>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <label>
+                        {{ if .task.Done }}
+                            <input type="checkbox" value="1" name="done" checked>
+                        {{ else }}
+                            <input type="checkbox" value="1" name="done"  >
+                        {{ end }}
+                        Selesai
+                    </label>
+                </div>
+                <div class="w-full">
+                    <label>Karyawan</label>
+                    <select name="worker_id">
+                        <option value="1">Worker #1</option>
+                        <option value="2">Worker #2</option>
+                        <option value="3">Worker #3</option>
+                        <option value="4">Worker #4</option>
+                        <option value="5">Worker #5</option>
+                    </select>
+                </div>
+                <input type="submit" class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
+            </form>
+
+
+            <table class="table w-full">
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Deskripsi</th>
+                    <th>Tgl Mulai</th>
+                    <th>Tgl Akhir</th>
+                    <th>Status</th>
+                    <th>Pegawai</th>
+                </tr>
+                {{ range $index, $task := .tasks}}
+                <tr>
+                    <td>{{ $index }}</td>
+                    <td>{{ $task.Name }}</td>
+                    <td>{{ $task.Description }}</td>
+                    <td>{{ $task.StartDate.Format "2 Jan 2006" }}</td>
+                    <td>{{ $task.EndDate.Format "2 Jan 2006" }}</td>
+                    <td>{{ $task.Done }}</td>
+                    <td>{{ $task.WorkerID }}</td>
+                </tr>
+                {{ end }}
+            </table>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
+            <h1 class="font-bold text-2xl">Daftar Pegawai</h1>            
+        </div>
+    </div>
+</body>
+
+</html>

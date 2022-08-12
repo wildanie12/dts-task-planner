@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	_config "github.com/wildanie12/dts-task-planner/config"
 	_models "github.com/wildanie12/dts-task-planner/models"
 	"gorm.io/gorm"
 )
@@ -56,4 +57,28 @@ func (controller TaskController) Store(c echo.Context) error  {
 	controller.db.Save(&taskRequest)
 
 	return c.Redirect(http.StatusMovedPermanently, "/tasks")
+}
+
+func (controller TaskController) Edit(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	}
+
+	task := _models.Task{}
+	tasks := []_models.Task{}
+	controller.db.First(&task, id)
+	controller.db.Find(&tasks)
+
+	baseURL := "http://" + _config.Get().App.Host
+	if _config.Get().App.Port != "80" {
+		baseURL += ":" + _config.Get().App.Port
+	}
+
+
+	return c.Render(http.StatusOK, "worker-edit.html", map[string]interface{} {
+		"task": task,
+		"tasks": tasks,
+		"baseURL": baseURL,
+	})
 }

@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Worker struct {
+type Task struct {
 	gorm.Model
 	Name string
 	Description string

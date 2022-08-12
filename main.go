@@ -15,13 +15,13 @@ func main() {
 	config := _config.Get()
 
 	db := _mysql.Connect(config)
-	db.AutoMigrate(&_models.Worker{})
+	db.AutoMigrate(&_models.Task{})
 
 	e := echo.New()
 	e.Renderer = _renderer.New()
 	e.Static("/", "public")
 	
-	taskController := _controllers.NewTaskControlller()
+	taskController := _controllers.NewTaskControlller(db)
 	workerController := _controllers.NewWorkerController(db)
 
 	_routes.RegisterRoute(e, taskController, workerController)

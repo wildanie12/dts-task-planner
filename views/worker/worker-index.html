@@ -14,11 +14,77 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
-    <div class="w-screen h-screen flex justify-center pt-12">
-        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, labore!</h1>
+<body class="bg-gray-50">
+    <div class="w-full lg:w-11/12 m-auto h-screen flex space-x-2 items-start justify-center pt-12">
+        <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
+            <h1 class="font-bold text-2xl mb-4">Daftar Task</h1>
+            
+            <form action="/tasks" method="post" class="flex flex-col gap-3 mb-4">
+                <div class="w-full">
+                    <label>Nama task</label>
+                    <input type="text" placeholder="Nama task" name="name">
+                </div>
+                <div class="w-full">
+                    <label>Deskripsi</label>
+                    <textarea type="text" placeholder="Deskripsi" name="description"></textarea>
+                </div>
+                <div class="flex w-full gap-2">
+                    <div class="w-full md:w-1/2">
+                        <label>Start Date</label>
+                        <input type="date" name="start_date">
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <label>End Date</label>
+                        <input type="date" name="end_date">
+                    </div>
+                </div>
+                <div class="w-full">
+                    <label>
+                        <input type="checkbox" value="1" name="done">
+                        Selesai
+                    </label>
+                </div>
+                <div class="w-full">
+                    <label>Karyawan</label>
+                    <select name="worker_id">
+                        <option value="1">Worker #1</option>
+                        <option value="2">Worker #2</option>
+                        <option value="3">Worker #3</option>
+                        <option value="4">Worker #4</option>
+                        <option value="5">Worker #5</option>
+                    </select>
+                </div>
+                <input type="submit" class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
+            </form>
+
+
+            <table class="table w-full">
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Deskripsi</th>
+                    <th>Tgl Mulai</th>
+                    <th>Tgl Akhir</th>
+                    <th>Status</th>
+                    <th>Pegawai</th>
+                </tr>
+                {{ range $index, $task := .tasks}}
+                <tr>
+                    <td>{{ $index }}</td>
+                    <td>{{ $task.Name }}</td>
+                    <td>{{ $task.Description }}</td>
+                    <td>{{ $task.StartDate.Format "2 Jan 2006" }}</td>
+                    <td>{{ $task.EndDate.Format "2 Jan 2006" }}</td>
+                    <td>{{ $task.Done }}</td>
+                    <td>{{ $task.WorkerID }}</td>
+                </tr>
+                {{ end }}
+            </table>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
+            <h1 class="font-bold text-2xl">Daftar Pegawai</h1>            
+        </div>
     </div>
-    <h1>Hello Ngok</h1>
 </body>
 
 </html>

@@ -20,9 +20,8 @@ func NewWorkerController(db *gorm.DB) *WorkerController {
 
 func (controller WorkerController) Index(c echo.Context) error {
 	
-	workers := []_models.Worker{}
+	workers := []_models.Task{}
 	controller.db.Find(&workers)
-
 	return c.Render(http.StatusOK, "worker-index.html", map[string]interface{} {
 		"workers": workers,
 	})

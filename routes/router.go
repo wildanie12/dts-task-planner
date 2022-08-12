@@ -7,7 +7,7 @@ import (
 
 
 func RegisterRoute(e *echo.Echo, taskController *controllers.TaskController, workerController *controllers.WorkerController) {
-	e.GET("/", taskController.Index)
+	e.GET("/tasks", taskController.Index)
 
 	e.GET("/workers", workerController.Index)
 }

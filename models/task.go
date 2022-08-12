@@ -8,10 +8,10 @@ import (
 
 type Task struct {
 	gorm.Model
-	Name string
-	Description string
-	StartDate time.Time
-	EndDate time.Time
-	Done bool
-	WorkerID uint
+	Name string `form:"name" json:"name"`
+	Description string `form:"description" json:"description"`
+	StartDate time.Time `form:"start_date" json:"start_date"`
+	EndDate time.Time `form:"end_date" json:"end_date"`
+	Done bool `form:"done" json:"done"`
+	WorkerID uint `form:"worker_id" json:"worker_id"`
 }

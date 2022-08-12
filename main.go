@@ -15,7 +15,7 @@ func main() {
 	config := _config.Get()
 
 	db := _mysql.Connect(config)
-	db.AutoMigrate(&_models.Task{})
+	db.AutoMigrate(&_models.Task{}, &_models.Worker{})
 
 	e := echo.New()
 	e.Renderer = _renderer.New()

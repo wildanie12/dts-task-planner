@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -27,10 +26,13 @@ func NewTaskControlller(db *gorm.DB) *TaskController {
 func (controller TaskController) Index(c echo.Context) error  {
 	tasks := []_models.Task{}
 	controller.db.Find(&tasks)
-	fmt.Println(tasks)
+	
+	workers := []_models.Worker{}
+	controller.db.Find(&workers)
 
-	return c.Render(http.StatusOK, "worker-index.html", map[string]interface{} {
+	return c.Render(http.StatusOK, "index.html", map[string]interface{} {
 		"tasks": tasks,
+		"workers": workers,
 	})
 }
 
@@ -55,19 +57,22 @@ func (controller TaskController) Store(c echo.Context) error  {
 
 	controller.db.Save(&taskRequest)
 
-	return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	return c.Redirect(http.StatusMovedPermanently, "/")
 }
 
 func (controller TaskController) Edit(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+		return c.Redirect(http.StatusMovedPermanently, "/")
 	}
 
-	task := _models.Task{}
 	tasks := []_models.Task{}
-	controller.db.First(&task, id)
+	workers := []_models.Worker{}
 	controller.db.Find(&tasks)
+	controller.db.Find(&workers)
+	
+	task := _models.Task{}
+	controller.db.First(&task, id)
 
 	baseURL := "http://" + _config.Get().App.Host
 	if _config.Get().App.Port != "80" {
@@ -75,9 +80,10 @@ func (controller TaskController) Edit(c echo.Context) error {
 	}
 
 
-	return c.Render(http.StatusOK, "worker-edit.html", map[string]interface{} {
+	return c.Render(http.StatusOK, "task-edit.html", map[string]interface{} {
 		"task": task,
 		"tasks": tasks,
+		"workers": workers,
 		"baseURL": baseURL,
 	})
 }
@@ -85,7 +91,7 @@ func (controller TaskController) Edit(c echo.Context) error {
 func (controller TaskController) Update(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+		return c.Redirect(http.StatusMovedPermanently, "/")
 	}
 
 	taskRequest := _models.Task{}
@@ -109,15 +115,15 @@ func (controller TaskController) Update(c echo.Context) error {
 	controller.db.Model(&_models.Task{}).Where("id = ?", id).Updates(taskRequest)
 
 
-	return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	return c.Redirect(http.StatusMovedPermanently, "/")
 }
 
 func (controller TaskController) Delete(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+		return c.Redirect(http.StatusMovedPermanently, "/")
 	}
 
 	controller.db.Where("id = ?", id).Delete(&_models.Task{})
-	return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	return c.Redirect(http.StatusMovedPermanently, "/")
 }

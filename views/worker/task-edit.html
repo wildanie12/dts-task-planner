@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ .baseURL }}/css/style.css">
 </head>
 
 <body class="bg-gray-50">
@@ -19,28 +19,32 @@
         <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
             <h1 class="font-bold text-2xl mb-4">Daftar Task</h1>
             
-            <form action="/tasks" method="post" class="flex flex-col gap-3 mb-4">
+            <form action="/tasks/{{ .task.ID }}/update" method="post" class="flex flex-col gap-3 mb-4">
                 <div class="w-full">
                     <label>Nama task</label>
-                    <input type="text" placeholder="Nama task" name="name">
+                    <input type="text" value="{{ .task.Name }}" placeholder="Nama task" name="name">
                 </div>
                 <div class="w-full">
                     <label>Deskripsi</label>
-                    <textarea type="text" placeholder="Deskripsi" name="description"></textarea>
+                    <textarea type="text" placeholder="Deskripsi" name="description">{{ .task.Description }}</textarea>
                 </div>
                 <div class="flex w-full gap-2">
                     <div class="w-full md:w-1/2">
                         <label>Start Date</label>
-                        <input type="date" name="start_date">
+                        <input type="date" name="start_date" value='{{ .task.StartDate.Format "2006-01-02" }}'>
                     </div>
                     <div class="w-full md:w-1/2">
                         <label>End Date</label>
-                        <input type="date" name="end_date">
+                        <input type="date" name="end_date" value='{{ .task.EndDate.Format "2006-01-02" }}'>
                     </div>
                 </div>
                 <div class="w-full">
                     <label>
-                        <input type="checkbox" value="1" name="done">
+                        {{ if .task.Done }}
+                            <input type="checkbox" value="1" name="done" checked>
+                        {{ else }}
+                            <input type="checkbox" value="1" name="done"  >
+                        {{ end }}
                         Selesai
                     </label>
                 </div>
@@ -80,7 +84,7 @@
                     <td>{{ $task.WorkerID }}</td>
                     <td>
                         <a href="/tasks/{{ $task.ID }}/edit">Edit</a>
-                        <a href="/tasks/{{ $task.ID }}/delete" onclick="return confirm('Anda yakin?')">Hapus</a>
+                        <a href="/tasks/{{ $task.ID }}/delete">Hapus</a>
                     </td>
                 </tr>
                 {{ end }}

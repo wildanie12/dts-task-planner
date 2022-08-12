@@ -11,14 +11,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ .baseURL }}/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="bg-gray-50">
     <div class="w-full lg:w-11/12 m-auto h-screen flex space-x-2 items-start justify-center pt-12">
         <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
             <h1 class="font-bold text-2xl mb-4">Daftar Task</h1>
-
+            
             <form action="/tasks/store" method="post" class="flex flex-col gap-3 mb-4">
                 <div class="w-full">
                     <label>Nama task</label>
@@ -54,8 +54,7 @@
                         <option value="5">Worker #5</option>
                     </select>
                 </div>
-                <input type="submit"
-                    class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
+                <input type="submit" class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
             </form>
 
 
@@ -88,42 +87,33 @@
             </table>
         </div>
         <div class="bg-white p-4 rounded-xl shadow-xl w-full lg:w-1/2">
-            <h1 class="font-bold text-2xl">Daftar Pegawai</h1>
-            <form action="/workers/{{ .worker.ID }}/update" method="post" class="flex flex-col gap-3 mb-4">
+            <h1 class="font-bold text-2xl">Daftar Pegawai</h1>            
+            <form action="/workers/store" method="post" class="flex flex-col gap-3 mb-4">
                 <div class="w-full">
                     <label>Nama</label>
-                    <input type="text" placeholder="Nama Pegawai ..." name="name" value="{{ .worker.Name }}">
+                    <input type="text" placeholder="Nama Pegawai ..." name="name">
                 </div>
                 <div class="w-full">
                     <label>Posisi jabatan</label>
-                    <input type="text" placeholder="Posisi jabatan pegawai ..." name="position" value="{{ .worker.Position }}">
+                    <input type="text" placeholder="Posisi jabatan pegawai ..." name="position">
                 </div>
                 <div class="w-full">
                     <label>Gender</label>
-                    <br />
+                    <br/>
                     <label>
-                        {{ if .isMale }}
-                            <input type="radio" value="L" name="gender" checked>
-                        {{ else }}
-                            <input type="radio" value="L" name="gender">
-                        {{ end }}
+                        <input type="radio" value="L" name="gender">
                         Laki-laki
                     </label>
                     <label>
-                        {{ if .isFemale }}"
-                            <input type="radio" value="P" name="gender" checked>
-                        {{ else }}
-                            <input type="radio" value="P" name="gender">
-                        {{ end }}
+                        <input type="radio" value="P" name="gender">
                         Perempuan
                     </label>
                 </div>
                 <div class="w-full">
                     <label>Alamat</label>
-                    <textarea placeholder="Alamat pegawai" name="address">{{ .worker.Address }}</textarea>
+                    <textarea placeholder="Alamat pegawai" name="address"></textarea>
                 </div>
-                <input type="submit"
-                    class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
+                <input type="submit" class="w-full bg-lime-300 px-4 py-2 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 active:translate-y-1 transition-all duration-200 ease-in-out">
             </form>
             <table class="table w-full">
                 <tr>
@@ -134,16 +124,16 @@
                     <th>Address</th>
                     <th></th>
                 </tr>
-                {{ range $index, $workerItem := .workers}}
+                {{ range $index, $worker := .workers}}
                 <tr>
                     <td>{{ $index }}</td>
-                    <td>{{ $workerItem.Name }}</td>
-                    <td>{{ $workerItem.Position }}</td>
-                    <td>{{ $workerItem.Gender }}</td>
-                    <td>{{ $workerItem.Address }}</td>
+                    <td>{{ $worker.Name }}</td>
+                    <td>{{ $worker.Position }}</td>
+                    <td>{{ $worker.Gender }}</td>
+                    <td>{{ $worker.Address }}</td>
                     <td>
-                        <a href="/workers/{{ $workerItem.ID }}/edit">Edit</a>
-                        <a href="/workers/{{ $workerItem.ID }}/delete" onclick="return confirm('Anda yakin?')">Hapus</a>
+                        <a href="/workers/{{ $worker.ID }}/edit">Edit</a>
+                        <a href="/workers/{{ $worker.ID }}/delete" onclick="return confirm('Anda yakin?')">Hapus</a>
                     </td>
                 </tr>
                 {{ end }}

@@ -52,7 +52,6 @@ func (controller TaskController) Store(c echo.Context) error  {
 	done, _ := strconv.ParseBool(c.FormValue("done"))
 	taskRequest.Done = done
 
-	fmt.Println(taskRequest)
 
 	controller.db.Save(&taskRequest)
 
@@ -81,4 +80,34 @@ func (controller TaskController) Edit(c echo.Context) error {
 		"tasks": tasks,
 		"baseURL": baseURL,
 	})
+}
+
+func (controller TaskController) Update(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.Redirect(http.StatusMovedPermanently, "/tasks")
+	}
+
+	taskRequest := _models.Task{}
+	c.Bind(&taskRequest)
+
+	// Populate data 
+	startDate, _ := time.Parse("2006-01-02", c.FormValue("start_date"))
+	taskRequest.StartDate = startDate
+
+	endDate, _ := time.Parse("2006-01-02", c.FormValue("end_date"))
+	taskRequest.EndDate = endDate
+
+	workerID, _ := strconv.Atoi(c.FormValue("worker_id"))
+	taskRequest.WorkerID = uint(workerID)
+	
+	done, _ := strconv.ParseBool(c.FormValue("done"))
+	taskRequest.Done = done
+
+	taskRequest.ID = uint(id)
+
+	controller.db.Model(&_models.Task{}).Where("id = ?", id).Updates(taskRequest)
+
+
+	return c.Redirect(http.StatusMovedPermanently, "/tasks")
 }

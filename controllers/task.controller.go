@@ -57,13 +57,13 @@ func (controller TaskController) Store(c echo.Context) error  {
 
 	controller.db.Save(&taskRequest)
 
-	return c.Redirect(http.StatusMovedPermanently, "/")
+	return c.Redirect(http.StatusFound, "/")
 }
 
 func (controller TaskController) Edit(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/")
+		return c.Redirect(http.StatusFound, "/")
 	}
 
 	tasks := []_models.Task{}
@@ -91,7 +91,7 @@ func (controller TaskController) Edit(c echo.Context) error {
 func (controller TaskController) Update(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/")
+		return c.Redirect(http.StatusFound, "/")
 	}
 
 	taskRequest := _models.Task{}
@@ -115,15 +115,15 @@ func (controller TaskController) Update(c echo.Context) error {
 	controller.db.Model(&_models.Task{}).Where("id = ?", id).Updates(taskRequest)
 
 
-	return c.Redirect(http.StatusMovedPermanently, "/")
+	return c.Redirect(http.StatusFound, "/")
 }
 
 func (controller TaskController) Delete(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.Redirect(http.StatusMovedPermanently, "/")
+		return c.Redirect(http.StatusFound, "/")
 	}
 
 	controller.db.Where("id = ?", id).Delete(&_models.Task{})
-	return c.Redirect(http.StatusMovedPermanently, "/")
+	return c.Redirect(http.StatusFound, "/")
 }

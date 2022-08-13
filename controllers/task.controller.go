@@ -25,7 +25,7 @@ func NewTaskControlller(db *gorm.DB) *TaskController {
 
 func (controller TaskController) Index(c echo.Context) error  {
 	tasks := []_models.Task{}
-	controller.db.Find(&tasks)
+	controller.db.Preload("Worker").Find(&tasks)
 	
 	workers := []_models.Worker{}
 	controller.db.Find(&workers)

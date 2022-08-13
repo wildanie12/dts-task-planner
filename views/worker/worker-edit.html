@@ -47,11 +47,9 @@
                 <div class="w-full">
                     <label>Karyawan</label>
                     <select name="worker_id">
-                        <option value="1">Worker #1</option>
-                        <option value="2">Worker #2</option>
-                        <option value="3">Worker #3</option>
-                        <option value="4">Worker #4</option>
-                        <option value="5">Worker #5</option>
+                        {{ range $worker := .workers }}
+                            <option value="{{ $worker.ID }}">{{ $worker.Name }}</option>
+                        {{ end }}
                     </select>
                 </div>
                 <input type="submit"
@@ -77,8 +75,14 @@
                     <td>{{ $task.Description }}</td>
                     <td>{{ $task.StartDate.Format "2 Jan 2006" }}</td>
                     <td>{{ $task.EndDate.Format "2 Jan 2006" }}</td>
-                    <td>{{ $task.Done }}</td>
-                    <td>{{ $task.WorkerID }}</td>
+                    <td>
+                        {{ if $task.Done }}
+                            ✅ Selesai
+                        {{ else }}
+                            ❌ Belum Selesai
+                        {{ end }}
+                    </td>
+                    <td>{{ $task.Worker.Name }}</td>
                     <td>
                         <a href="/tasks/{{ $task.ID }}/edit">Edit</a>
                         <a href="/tasks/{{ $task.ID }}/delete" onclick="return confirm('Anda yakin?')">Hapus</a>
